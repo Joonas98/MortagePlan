@@ -42,8 +42,8 @@ namespace MortagePlan.Pages.MortageCalculator
                 // Create the new customer and calculate the payment
 				using SqlCommand command = new (sql, connection);
 				command.Parameters.AddWithValue("@name", customerInfo.name);
-				command.Parameters.AddWithValue("@total_loan", customerInfo.total_loan);
-				command.Parameters.AddWithValue("@interest", customerInfo.interest);
+				command.Parameters.AddWithValue("@total_loan", Convert.ToDouble(customerInfo.total_loan));
+				command.Parameters.AddWithValue("@interest", Convert.ToDouble(customerInfo.interest));
 				command.Parameters.AddWithValue("@years", customerInfo.years);
 				command.Parameters.AddWithValue("@monthly_payment", Helper.CalculateMonthlyPayment(
 						customerInfo.total_loan,
