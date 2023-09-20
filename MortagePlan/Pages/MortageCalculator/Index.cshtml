@@ -1,0 +1,39 @@
+﻿@page
+@model MortagePlan.Pages.MortageCalculator.IndexModel
+@{
+}
+
+<br>
+<h2>List of Clients</h2>
+<a class="btn btn alert-primary btn-sm" href="/MortageCalculator/Create">New Customer</a>
+<table class="table">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Total Loan</th>
+			<th>Interest %</th>
+			<th>Years</th>
+			<th>Monthly Payment</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model.customersList)
+		{
+			<tr>
+				<td>@item.id</td>
+				<td>@item.name</td>
+				<td>@item.total_loan</td>
+				<td>@item.interest</td>
+				<td>@item.years</td>
+				<td>@item.monthly_payment</td>
+				<td>
+					<a class="btn btn-primary btn-sm" href="/MortageCalculator/Edit?id=@item.id">Edit</a>
+					<a class="btn btn-primary btn-sm" href="/MortageCalculator/Calculate?id=@item.id">Calculate</a>
+					<a class="btn btn-danger btn-sm" href="/MortageCalculator/Delete?id=@item.id">Delete</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

@@ -1,0 +1,66 @@
+﻿@page
+@model MortagePlan.Pages.MortageCalculator.CreateModel
+@{
+}
+
+<br>
+<h2>New Customer</h2>
+
+@if (Model.errorMessage.Length > 0)
+{
+	<div class="alert alert-warning alert-dismissible fade show" role="alert">
+		<strong>@Model.errorMessage</strong>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+}
+
+<form method="POST">
+	<div class="row mb-3">
+		<label class="col-sm-3 col-form-label">Name</label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" name="name" value="@Model.customerInfo.name">
+		</div>
+	</div>
+
+	<div class="row mb-3">
+		<label class="col-sm-3 col-form-label">Total Loan</label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" name="total_loan" value="@Model.customerInfo.total_loan">
+		</div>
+	</div>
+
+	<div class="row mb-3">
+		<label class="col-sm-3 col-form-label">Interest %</label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" name="interest" value="@Model.customerInfo.interest">
+		</div>
+	</div>
+
+	<div class="row mb-3">
+		<label class="col-sm-3 col-form-label">Years</label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" name="years" value="@Model.customerInfo.years">
+		</div>
+	</div>
+
+	@if (!string.IsNullOrEmpty(Model.successMessage))
+	{
+		<div class="row mb-3">
+			<div class="col-sm-9">
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					<strong>@Model.successMessage</strong>
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			</div>
+		</div>
+	}
+
+	<div class="row mb-3">
+		<div class="offset-sm-3 col-sm-3 d-grid">
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</div>
+		<div class="col-sm-3 d-grid">
+			<a class="btn btn-outline-primary" href="/" role="button">Cancel</a>
+		</div>
+	</div>
+</form>

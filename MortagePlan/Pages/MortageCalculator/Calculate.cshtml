@@ -1,0 +1,53 @@
+﻿@page
+@using System.Data.SqlClient;
+
+@{
+    try
+    {
+        String id = Request.Query["id"];
+        using (SqlConnection connection = new SqlConnection(Helper.connectionString))
+        {
+            connection.Open();
+
+            // Retrieve the necessary data from the database
+            String sqlSelect = "SELECT total_loan, interest, years, name FROM Prospects WHERE id=@id";
+            using (SqlCommand selectCommand = new SqlCommand(sqlSelect, connection))
+            {
+                selectCommand.Parameters.AddWithValue("@id", id);
+                using (SqlDataReader reader = selectCommand.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        // Get the values from the database
+                        string L = reader.GetDouble(0).ToString(); // Principal (total_loan)
+                        string c = reader.GetDouble(1).ToString(); // Interest rate. Converting percentages with / 100
+                        string n = reader.GetInt32(2).ToString(); // Number of payments (12 months each year)
+                        string name = reader.GetString(3);
+
+                        // Calculate the monthly payment
+                        double monthlyPayment = Helper.CalculateMonthlyPayment(L, c, n, name);
+
+                        // Close the reader before executing the update command
+                        reader.Close();
+
+                        // Update the database with the calculated monthly payment
+                        String sqlUpdate = "UPDATE Prospects SET monthly_payment=@monthlyPayment WHERE id=@id";
+                        using (SqlCommand updateCommand = new SqlCommand(sqlUpdate, connection))
+                        {
+                            updateCommand.Parameters.AddWithValue("@monthlyPayment", monthlyPayment);
+                            updateCommand.Parameters.AddWithValue("@id", id);
+                            updateCommand.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("Something went wrong: " + ex);
+    }
+
+    // Return to the main page
+    Response.Redirect("/MortageCalculator/Index");
+}
