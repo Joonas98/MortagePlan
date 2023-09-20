@@ -4,20 +4,36 @@ using System.Data.SqlClient;
 
 namespace MortagePlan.Pages.MortageCalculator
 {
-    public class IndexModel : PageModel
-    {
-        public List<CustomerInfo> customersList = new();
+	public class IndexModel : PageModel
+	{
+		// List to store customer information
+		public List<CustomerInfo> customersList = new();
+		private string _connectionString; // Connection string to the database
 
-		public void OnGet() 
+		// Constructor for the IndexModel
+		// Allows specifying a custom connectionString for NUnit testing, defaults to Helper.connectionString
+		public IndexModel(string connectionString = null)
 		{
-			try { 
-				using SqlConnection connection = new(Helper.connectionString);
-				connection.Open();
-				String sql = "SELECT * FROM Prospects"; // Todo: avoid using SELECT *
+			_connectionString = connectionString ?? Helper.connectionString;
+		}
 
+		// Executed when a GET request is made to the page
+		public void OnGet()
+		{
+			try
+			{
+				// Establish a database connection using the provided or default connection string
+				using SqlConnection connection = new(_connectionString);
+				connection.Open();
+
+				// SQL query to retrieve customer information
+				string sql = "SELECT id, name, total_loan, interest, years, monthly_payment FROM Prospects";
+
+				// Create a SQL command and execute the query
 				using SqlCommand command = new(sql, connection);
 				using SqlDataReader reader = command.ExecuteReader();
 
+				// Loop through the query results and populate the customersList
 				while (reader.Read())
 				{
 					CustomerInfo clientInfo = new()
@@ -33,17 +49,17 @@ namespace MortagePlan.Pages.MortageCalculator
 					customersList.Add(clientInfo);
 				}
 			}
-            catch (Exception ex)
-            {
-                Console.WriteLine("Exception: " +  ex.Message);
-            }
-
+			catch (Exception ex)
+			{
+				// Handle any exceptions that may occur during database access
+				Console.WriteLine("Exception: " + ex.Message);
+			}
 		}
 	}
-	
+
 	// The class containing the customer data
 	public class CustomerInfo
-    {
-        public string id, name, total_loan, interest, years, monthly_payment;
-    }
+	{
+		public string id, name, total_loan, interest, years, monthly_payment;
+	}
 }

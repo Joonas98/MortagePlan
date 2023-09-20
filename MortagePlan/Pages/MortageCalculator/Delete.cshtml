@@ -2,27 +2,29 @@
 @using System.Data.SqlClient;
 
 @{
-	try
-	{
-		// This file is for deleting chosen prospects
-		String id = Request.Query["id"];
-		using (SqlConnection connection = new SqlConnection(Helper.connectionString))
-		{
-			connection.Open();
+    try
+    {
+        // This file is for deleting chosen prospects
+        String id = Request.Query["id"]; // Get the customer ID from the query string
 
-			String sql = "DELETE FROM Prospects WHERE id=@id";
-			using(SqlCommand command = new SqlCommand(sql, connection))
-			{
-				command.Parameters.AddWithValue("@id", id);
-				command.ExecuteNonQuery();
-			}
-		}
-	}
-	catch (Exception ex)
-	{
-		Console.WriteLine("Something went wrong: " + ex);
-	}
+        using (SqlConnection connection = new SqlConnection(Helper.connectionString))
+        {
+            connection.Open();
 
-	// Return to the main page
-	Response.Redirect("/MortageCalculator/Index");
+            String sql = "DELETE FROM Prospects WHERE id=@id"; // SQL query to delete a prospect by ID
+
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                command.Parameters.AddWithValue("@id", id); // Set the parameter for the customer ID
+                command.ExecuteNonQuery(); // Execute the SQL delete command
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("Something went wrong: " + ex); // Handle any exceptions that may occur during database access
+    }
+
+    // Return to the main page after deleting the prospect
+    Response.Redirect("/MortageCalculator/Index");
 }
