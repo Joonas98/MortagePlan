@@ -31,16 +31,16 @@ namespace MortagePlan.Pages.MortageCalculator
 				// Execute the query and read the customer data
 				using SqlDataReader reader = command.ExecuteReader();
 
-				if (reader.Read())
-				{
-					// Populate the customerInfo object with the retrieved data
-					customerInfo.id = reader.GetInt32(0).ToString();
-					customerInfo.name = reader.GetString(1);
-					customerInfo.total_loan = reader.GetDouble(2).ToString();
-					customerInfo.interest = reader.GetDouble(3).ToString();
-					customerInfo.years = reader.GetInt32(4).ToString();
-				}
-			}
+                if (reader.Read())
+                {
+                    // Populate the customerInfo object with the retrieved data
+                    customerInfo.id = reader.GetInt32(0).ToString();
+                    customerInfo.name = reader.GetString(1);
+                    customerInfo.total_loan = reader.GetDouble(2).ToString(CultureInfo.InvariantCulture); // Use CultureInfo.InvariantCulture
+                    customerInfo.interest = reader.GetDouble(3).ToString(CultureInfo.InvariantCulture); // Use CultureInfo.InvariantCulture
+                    customerInfo.years = reader.GetInt32(4).ToString();
+                }
+            }
 			catch (Exception ex)
 			{
 				// Handle any exceptions that may occur during database access
@@ -81,17 +81,18 @@ namespace MortagePlan.Pages.MortageCalculator
 				using SqlCommand command = new(sql, connection);
 				command.Parameters.AddWithValue("@id", customerInfo.id);
 				command.Parameters.AddWithValue("@name", customerInfo.name);
-				command.Parameters.AddWithValue("@total_loan", Convert.ToDouble(customerInfo.total_loan));
-				command.Parameters.AddWithValue("@interest", Convert.ToDouble(customerInfo.interest));
+				command.Parameters.AddWithValue("@total_loan", customerInfo.total_loan);
+				command.Parameters.AddWithValue("@interest", customerInfo.interest);
 				command.Parameters.AddWithValue("@years", customerInfo.years);
 
-				// Calculate and set the monthly_payment parameter using a helper method
-				command.Parameters.AddWithValue("@monthly_payment", Helper.CalculateMonthlyPayment(
+				// Calculate and set the @monthly_payment parameter directly as a double
+				double monthlyPaymentValue = Helper.CalculateMonthlyPayment(
 					customerInfo.total_loan,
 					customerInfo.interest,
 					customerInfo.years,
 					customerInfo.name
-				));
+				);
+				command.Parameters.AddWithValue("@monthly_payment", monthlyPaymentValue);
 
 				// Execute the SQL update command
 				command.ExecuteNonQuery();

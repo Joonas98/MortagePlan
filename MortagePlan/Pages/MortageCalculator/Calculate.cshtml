@@ -19,13 +19,13 @@
                     if (reader.Read())
                     {
                         // Get the values from the database
-                        string L = reader.GetDouble(0).ToString(); // Principal (total_loan)
-                        string c = reader.GetDouble(1).ToString(); // Interest rate. Converting percentages with / 100
-                        string n = reader.GetInt32(2).ToString(); // Number of payments (12 months each year)
+                        decimal L = reader.GetDecimal(0); // Principal (total_loan)
+                        decimal c = reader.GetDecimal(1); // Interest rate (percentage)
+                        int n = reader.GetInt32(2); // Number of payments (12 months each year)
                         string name = reader.GetString(3);
 
                         // Calculate the monthly payment
-                        double monthlyPayment = Helper.CalculateMonthlyPayment(L, c, n, name);
+                        double monthlyPayment = Helper.CalculateMonthlyPayment(L.ToString(), (c / 100).ToString(), n.ToString(), name);
 
                         // Close the reader before executing the update command
                         reader.Close();

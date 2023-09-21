@@ -25,14 +25,16 @@
 	<div class="row mb-3">
 		<label class="col-sm-3 col-form-label">Total Loan</label>
 		<div class="col-sm-6">
-			<input type="text" class="form-control" pattern="[0-9,]*" name="total_loan" value="@Model.customerInfo.total_loan">
+			<!-- Azure only accepts "." so: pattern="[0-9.]*" -->
+			<input type="text" class="form-control" pattern="[0-9.]*" name="total_loan" value="@Model.customerInfo.total_loan">
 		</div>
 	</div>
 
 	<div class="row mb-3">
 		<label class="col-sm-3 col-form-label">Interest %</label>
 		<div class="col-sm-6">
-			<input type="text" class="form-control" pattern="[0-9,]*" name="interest" value="@Model.customerInfo.interest">
+			<!-- Azure only accepts "." so: pattern="[0-9.]*" -->
+			<input type="text" class="form-control" pattern="[0-9.]*" name="interest" value="@Model.customerInfo.interest">
 		</div>
 	</div>
 
