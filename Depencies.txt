@@ -1,0 +1,5 @@
+The following NuGet depencies are required:
+System.Data.SqlClient (by Microsoft)
+NUnit (by Charlie Poole, Rob Prouse)
+Microsoft.NET.Test.Sdk (by Microsoft)
+Microsoft.TestPlatform.TestHost (by Microsoft)
