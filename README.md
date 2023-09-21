@@ -1,5 +1,8 @@
 # MortagePlan
 This project is deployed in Azure: https://mortageplan20230921133942.azurewebsites.net/MortageCalculator/Index
+
+I also made a brief demo to Youtube: https://youtu.be/YCX0ySlz2YI
+
 You can use this website to create, edit, delete and view customers.
 Each customer has an ID (unique for each), name, total loan, interest %, years in which they plan to pay. These variables are used to calculate how much they need to pay each month.
 The data is stored in a SQL database in Azure.
